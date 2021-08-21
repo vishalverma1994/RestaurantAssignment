@@ -1,50 +1,29 @@
 package com.restaurants.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.viewModels
-import androidx.lifecycle.ViewModelProvider
-import com.restaurants.R.layout
-import com.restaurants.extension.loadJSONFromAsset
+import androidx.appcompat.app.AppCompatActivity
+import com.restaurants.databinding.ActivityMainBinding
 import com.restaurants.model.*
-import com.restaurants.viewmodel.RestaurantViewModel
+import com.restaurants.ui.fragments.RestaurantsFragment
 import dagger.hilt.android.AndroidEntryPoint
-import org.json.JSONArray
-import org.json.JSONException
-import org.json.JSONObject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val TAG = MainActivity::class.simpleName
-    private lateinit var restaurantViewModel : RestaurantViewModel
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         initComponents()
     }
 
     private fun initComponents() {
-        restaurantViewModel = ViewModelProvider(this)[RestaurantViewModel::class.java]
-        parseRestaurantJson()
-
-        parseMenusJson()
-        this.loadJSONFromAsset("restaurants.json")?.let {
-            restaurantViewModel.parseRestaurantJson(it)
-        }
-
-        this.loadJSONFromAsset("menus.json")?.let {
-            restaurantViewModel.parseMenusJson(it)
-        }
+        //open restaurant fragment
+        supportFragmentManager.beginTransaction()
+            .replace(binding.flContainer.id, RestaurantsFragment.newInstance(Bundle())).commit()
     }
 
-    private fun parseRestaurantJson() {
-
-    }
-
-    private fun parseMenusJson() {
-
-    }
 }
