@@ -12,6 +12,8 @@
         android:theme="@style/Theme.RestaurantsAssignment">
         <activity
             android:name=".ui.activity.MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="sensor"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

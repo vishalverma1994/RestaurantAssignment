@@ -17,13 +17,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        initComponents()
+        initComponents(savedInstanceState)
     }
 
-    private fun initComponents() {
-        //open restaurant fragment
-        supportFragmentManager.beginTransaction()
-            .replace(binding.flContainer.id, RestaurantsFragment.newInstance(Bundle())).commit()
+    private fun initComponents(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            //open restaurant fragment
+            supportFragmentManager.beginTransaction()
+                .replace(binding.flContainer.id, RestaurantsFragment.newInstance(Bundle())).commit()
+        }
     }
 
 }

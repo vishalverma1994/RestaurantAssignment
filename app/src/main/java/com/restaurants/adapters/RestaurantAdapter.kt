@@ -22,8 +22,16 @@ class RestaurantAdapter : ListAdapter<Restaurants, RestaurantAdapter.ViewHolder>
 
     inner class ViewHolder(private val binding: AdapterRestaurantBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindViews(item: Restaurants?) {
-            if (item != null)
-                binding.tvRestaurantName.text = item.name
+            if (item != null) {
+                binding.restaurants = item
+                var finalRating = 0f
+                item.reviews.forEach {
+                    finalRating += it.rating
+                }
+
+                finalRating /= item.reviews.size
+                binding.ratingBar.rating = finalRating
+            }
         }
     }
 }

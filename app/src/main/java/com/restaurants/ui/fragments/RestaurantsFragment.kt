@@ -26,8 +26,6 @@ import com.restaurants.ui.activity.MainActivity
 class RestaurantsFragment : Fragment() {
 
     private lateinit var restaurantViewModel: RestaurantViewModel
-    private var restaurantsList = emptyList<Restaurants>()
-    private var menusList = emptyList<Menus>()
     private lateinit var restaurantAdapter: RestaurantAdapter
     private lateinit var binding: FragmentRestaurantsBinding
     private lateinit var searchView: SearchView
@@ -70,9 +68,9 @@ class RestaurantsFragment : Fragment() {
             queryTextListener = object : OnQueryTextListener {
                 override fun onQueryTextChange(newText: String): Boolean {
                     Log.i("$TAG onQueryTextChange", newText)
-                    if (!newText.isNullOrEmpty()){
+                    if (newText.isNotEmpty()) {
                         restaurantViewModel.searchQuery(newText)
-                    }
+                    } else observeRestaurantsList()
                     return true
                 }
 
@@ -87,23 +85,13 @@ class RestaurantsFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_search ->
-
-                return false
-            else -> {
-
-            }
-        }
-        searchView.setOnQueryTextListener(queryTextListener)
-        return super.onOptionsItemSelected(item)
-    }
-
     private fun initComponents() {
         restaurantViewModel = ViewModelProvider(this)[RestaurantViewModel::class.java]
 
-        restaurantViewModel.getRestaurantFilterData(requireContext().loadJSONFromAsset("restaurants.json"), requireContext().loadJSONFromAsset("menus.json"))
+        restaurantViewModel.getRestaurantFilterData(
+            requireContext().loadJSONFromAsset("restaurants.json"),
+            requireContext().loadJSONFromAsset("menus.json")
+        )
 
         setRestaurantAdapter()
         observeRestaurantsList()
